@@ -47,6 +47,8 @@ you can directly read it or add to your info dir.
     ;; directly read it
     (info "~/sicp/texinfo/sicp.info") 
 
+or add it into a info dir, just add a man-page into manual system.
+
  1. by using info dir, check this 2 variable in emacs,
     `Info-default-directory-list` `Info-additional-directory-list` ,
     choose a dir you like, or create new then add it to addtional list.
