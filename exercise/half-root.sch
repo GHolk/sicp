@@ -80,3 +80,27 @@
    (lambda (i)
      (- (* i 2) 1))
    k))
+
+(define (average-damp f)
+  (define (average x y) (/ (+ x y) 2))
+  (lambda (x) (average x (f x))))
+
+(define (my-sqrt x)
+  (fixed-point
+   (average-damp
+    (lambda (y) (/ x y)))
+   1.0
+   (lambda (prev next)
+     (let ((ratio-error (- 1 (/ prev
+                                next))))
+       (> 0.01 (abs ratio-error))))))
+
+(define (my-cbrt x)
+  (fixed-point
+   (average-damp
+    (lambda (y) (/ x y y)))
+   1.0
+   (lambda (prev next)
+     (let ((ratio-error (- 1 (/ prev
+                                next))))
+       (> 0.01 (abs ratio-error))))))
