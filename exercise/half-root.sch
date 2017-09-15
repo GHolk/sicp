@@ -104,3 +104,85 @@
      (let ((ratio-error (- 1 (/ prev
                                 next))))
        (> 0.01 (abs ratio-error))))))
+
+(define (deriv f)
+  (define dx 0.001)
+  (lambda (x)
+    (/ (- (f (+ x dx)) (f x))
+       dx)))
+
+(define (newtons-method g guess test)
+  (define (newton-transform g)
+    (lambda (x)
+      (- x (/ (g x)
+              ((deriv g) x)))))
+  (fixed-point (newton-transform g) guess test))
+
+(define (ratio-error ratio)
+  (lambda (prev next)
+    (let ((ratio-error (- 1 (/ prev
+                               next))))
+      (> ratio (abs ratio-error)))))
+
+(define (cubic a b c)
+  (lambda (x)
+    (+ (expt x 3)
+       (* a (expt x 2))
+       (* b x)
+       c)))
+
+(define (double f)
+  (lambda (x)
+    (f (f x))))
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+(define (repeated f n)
+  (define (iter i result)
+    (if (= i n)
+        result
+        (iter (+ i 1) (f result))))
+  (define (recur i x)
+    (if (= i n)
+        x
+        (f (recur (+ i 1) x))))
+  (lambda (x)
+    (iter 1 x)))
+
+(define (smooth f dx)
+  (define (average3 a b c)
+    (/ (+ a b c) 3.0))
+  (lambda (x)
+    (average3 (f (+ x dx))
+              (f x)
+              (f (- x dx)))))
+
+(define (rand-f range length)
+  (define (nth n list)
+    (define (iter i remaind-list)
+      (if (= i n)
+          (car remaind-list)
+          (iter (+ i 1)
+                (cdr remaind-list))))
+    (iter 0 list))
+  (define rand-seq
+    ((repeated (lambda (s)
+                 (cons (random range) s))
+               length)
+     '()))
+  (lambda (i)
+    (nth (remainder i length)
+         rand-seq)))
+
+(let* ((rf (rand-f 1000 100))
+       (srf (smooth rf 1))
+       (ssrf (smooth srf 1)))
+  (define (display-range f start end)
+    (display (map f (seq start end)))
+    (newline))
+  (display-range rf 1 98)
+  (display-range srf 2 97)
+  (display-range ssrf 3 96))
+            

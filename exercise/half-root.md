@@ -125,3 +125,37 @@ sicp 還沒介紹轉換，
 
 [r6rs]: http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_sec_11.20
 
+
+## compose 和 repeated
+題目提示 repeated 可以用 compose 實作，
+但我看不出兩者關連在哪 orz
+
+compose 蠻簡單的，因為要組合的函數固定二個，
+直接寫死在 code 裡就好。
+
+repeated 就得要用迴圈或遞迴。
+用迴圈本來就要二個變數，counter 和 result，
+所以把初始值當 result 傳進去就好。
+用遞迴要嘛把初始值用閉包進去，
+要嘛多開一個參數放初始值；如果要用閉包，
+要把 recur 定義在回傳的 lambda 裡面，
+會太醜就沒用。
+
+## smooth
+這東西蠻有趣的，原來和諧函數這樣寫。
+但題沒給測試用 sample，也不知道對不對 `:'(`
+只好自幹一個。
+
+用 octave 產了一堆隨機數存到檔案，
+再用 emacs 丟到 scheme repl 裡，
+smooth 完二次後丟回 octave 繪圖。
+
+![smooth random number](smooth-random-number.svg)
+
+用那種不嚴謹方式 smooth 果然可以從
+garbage 裡生出看似有用的 garbage `XD`
+
+後來覺得用 octave 太不 scheme 了，
+於是寫了 scheme 版的隨機數生產。
+但 scheme 不能繪圖，
+還是得丟到 octave或gnuplot畫 `:'(`
