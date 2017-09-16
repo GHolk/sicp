@@ -17,7 +17,7 @@ special form 是必須的，必須不對某一部份求值，
 
   - [scheme 版本](newton-sqrt.sch)
   - [emacs lisp 版本](newton-sqrt.el)
-  
+
 ## 1-2 程序
 這章在講遞迴和迴圈，介紹其實尾端遞迴可以看成一種迴圈。
 （以後提到迴圈就是指尾端遞迴。）
@@ -32,6 +32,10 @@ special form 是必須的，必須不對某一部份求值，
 一般取名為 iter 或 recur。
 可能二個都定義，想用哪個就改最後一行呼叫哪個。
 
+另外就是在定義輔助函數時，
+可以考慮有些變數在函數結束前都不會變，
+就可以用閉包當作全域變數包進來，不用再傳來傳去。
+
   - [簡單階乘](fact.sch)
   - 找零錢問題： 這題覺得很有趣，就寫成
     [scheme](make-change.sch) [elisp](make-change.el) 
@@ -40,7 +44,8 @@ special form 是必須的，必須不對某一部份求值，
   - [帕斯卡三角形](pascal-tringle.sch) 卡蠻久的，
     最後研究了 numbbbbb 的程式才算出來。
   - [費氏數列](fib.sch)
-  
+
+
 ### 1-2-4 [快速冪](fast-expt.md)
 就是將複雜度 n 簡化為 log n，包括次方和費氏數列。
 算是簡單認識最佳化吧。
