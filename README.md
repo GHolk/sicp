@@ -62,3 +62,5 @@ or add it into a info dir, just add a man-page into manual system.
     you should see all info in your system,
     include sicp.info just install.
     
+
+https://github.com/numbbbbb/sicp
