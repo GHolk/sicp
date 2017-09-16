@@ -185,16 +185,33 @@
   (display-range rf 1 98)
   (display-range srf 2 97)
   (display-range ssrf 3 96))
-            
-(define (nth-root n try-times)
+
+(define (nth-root n damp-times try-times)
   (lambda (x)
     (fixed-point
-     (average-damp (lambda (y) (/ x (expt y (- n 1)))))
+     ((repeated average-damp damp-times)
+      (lambda (y) (/ x (expt y (- n 1)))))
      1.0
      (let ((i 0))
        (lambda (prev next)
          (display (list prev next)) (newline)
          (< try-times
             (set! i (+ i 1))))))))
-             
-     
+
+
+(define (iterative-improve f test guess)
+  (define (iter x)
+    (if (test x)
+        x
+        (iter (f x))))
+  (iter guess))
+
+(define (iter-sqrt x)
+  (iterative-improve
+   (average-damp
+    (lambda (y) (/ x y)))
+   (lambda (y)
+     (define allow-error 0.1)
+     (> allow-error
+        (abs (- (square y) x))))
+   1.0))
