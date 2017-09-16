@@ -186,3 +186,15 @@
   (display-range srf 2 97)
   (display-range ssrf 3 96))
             
+(define (nth-root n try-times)
+  (lambda (x)
+    (fixed-point
+     (average-damp (lambda (y) (/ x (expt y (- n 1)))))
+     1.0
+     (let ((i 0))
+       (lambda (prev next)
+         (display (list prev next)) (newline)
+         (< try-times
+            (set! i (+ i 1))))))))
+             
+     

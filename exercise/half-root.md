@@ -125,6 +125,24 @@ sicp 還沒介紹轉換，
 
 [r6rs]: http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_sec_11.20
 
+## average-damp
+有時候 fixed-point 不收斂，可以改一下函數讓他收斂，
+於是創造了一個函數 average-damp，會去 *裝飾* 一個函數，
+把他的輸出結果和輸入平均後再輸出。
+經過裝飾過的函數大多收斂了。
+
+## newtons-method
+實作牛頓法蠻有趣的，還先實作了微分 `XD`
+然後實作一個 `cubic` 函數，可以輸入係數產生三次多項式，
+再用牛頓法解該多項式的根。
+
+## double
+double 就是輸入一個函數，返回一個新的，
+會對輸入 apply 二次原函數的函數。
+題目弄了 `((double (double double)) f)` ，
+我一開始還想錯，以為只會做 8 次，
+結果是 16 次，應該是用 `(2^2)^2` 在成長的。
+
 
 ## compose 和 repeated
 題目提示 repeated 可以用 compose 實作，
@@ -158,4 +176,28 @@ garbage 裡生出看似有用的 garbage `XD`
 後來覺得用 octave 太不 scheme 了，
 於是寫了 scheme 版的隨機數生產。
 但 scheme 不能繪圖，
-還是得丟到 octave或gnuplot畫 `:'(`
+還是得丟到 octave 或 gnuplot 畫 `:'(`
+
+
+## nth-root
+這題說到如果要開方的次數大，
+也就是不動點變成 `(lambda (y) (/ x (expt y n)))` ，
+只用一次 `average-damp` 會不夠。
+要我們用 `repeated` 重覆 average-damp 加速收斂。
+
+我也不知道怎麼測，
+就改成要手動輸入要執行不動點幾次，
+然後每次都把結果印出來，
+再看有沒有收斂。
+
+三次方根 damp 二次就夠，
+四次方根要 damp 三次，
+但也找不太出規律。
+
+## iterative-improve
+其實和之前我定義的 `fixed-point` 差不多，
+只是把 test 獨立出來成一個函數；
+但我的 fixed-point 本來就是用獨立的 test 函數。
+另外我的 test 函數是比較二次的結果，
+但感覺題目的 iterative-improve 是只給 test 一個參數，
+和我的 fixed-point又有點差。
