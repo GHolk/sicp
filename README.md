@@ -1,10 +1,8 @@
-my sicp
-=======
+# my sicp
 I decide to read sicp at 2017 summer vacation.
 this git record my reading.
 
-reason
-------
+## reason
 I know Linux as OS, write few javascript and web programing,
 but lack some theorem about computer science,
 so I decide to read some book.
@@ -13,8 +11,7 @@ I love javascript as a functional programing language,
 and <http://yinwang.org> say lisp/scheme wonderful,
 so I try to use emacs and lisp, and so on choose sicp.
 
-install
--------
+## install
 To read it local, first I use wget download from
 <https://mitpress.mit.edu/sicp/> , put them in `./html` .
 
@@ -35,8 +32,7 @@ convert to single info file:
     default makeinfo auto split file.
 
 
-read info format
-----------------
+## read info format
 you can read it by command `info` or using emacs.
 
     info ./sicp.info
@@ -63,4 +59,5 @@ or add it into a info dir, just add a man-page into manual system.
     include sicp.info just install.
     
 
-https://github.com/numbbbbb/sicp
+## [numbbbbb's read record](https://github.com/numbbbbb/sicp)
+when i cannot figure out answer, i would see his answer.
