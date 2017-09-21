@@ -11,6 +11,9 @@ I love javascript as a functional programing language,
 and <http://yinwang.org> say lisp/scheme wonderful,
 so I try to use emacs and lisp, and so on choose sicp.
 
+## [筆記](exercise)
+每讀完一節會寫筆記，努力認真中。
+
 ## install
 To read it local, first I use wget download from
 <https://mitpress.mit.edu/sicp/> , put them in `./html` .
