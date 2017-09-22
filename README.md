@@ -21,12 +21,18 @@ To read it local, first I use wget download from
 then I find texinfo format,
 and download from <http://www.neilvandyke.org/sicp-texi/> .
 
-to install need `makeinfo` convert texi to info file.
+to install need `makeinfo` or `texi2any` convert texi to info file.
 or you can just use info file convert by me.
 
 convert to single info file:
 
-    makeinfo sicp.texi --force --no-split -o sicp.info
+    cd texinfo 
+    make sicp.info
+    make sicp.html # if you want html version
+    make sicp.pdf # work if you have TeX installed
+
+
+in `Makefile`:
 
   - `--force` for some syntax error in sicp.texi,
     maybe because of old version.
