@@ -30,6 +30,8 @@ convert to single info file:
     make sicp.info
     make sicp.html # if you want html version
     make sicp.pdf # work if you have TeX installed
+    make install # if you want to put sicp.info into your info path
+    INFOPATH=$HOME/.local/share/info make install # spec info path
 
 
 in `Makefile`:
