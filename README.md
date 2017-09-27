@@ -36,12 +36,15 @@ convert to single info file:
 
 in `Makefile`:
 
+  - `--no-warn` sicp.texi has many syntax error, 
+    and I do not know how to fix.
+
   - `--force` for some syntax error in sicp.texi,
     maybe because of old version.
+    or would not output info file.
     
   - `--no-split` cause makeinfo output into single file,
     default makeinfo auto split file.
-
 
 ## read info format
 you can read it by command `info` or using emacs.
