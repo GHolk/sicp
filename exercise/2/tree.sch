@@ -163,3 +163,33 @@
      tree))
   (recur tree))
      
+
+
+(define (subsets s)
+  (define (iter set else-set)
+    (let* ((next (car else-set))
+           (next-set (append set
+                             (map (lambda (subset) (cons next subset))
+                                  set)))
+           (next-else (cdr else-set)))
+      (if (null? next-else)
+          next-set
+          (iter next-set next-else))))
+  (define (my-reduce f init list)
+    "I do not know why scheme reduce not work like this."
+    (reduce f init (cons init list))) 
+  (define (recur s)
+    (if (null? s)
+        (list s)
+        (let ((rest (subsets (cdr s)))
+              (current (car s)))
+          (my-reduce
+           (lambda (list x)
+             (cons (cons current x)
+                   list))
+           rest
+           rest))))
+          ;; (append rest
+          ;;         (map (lambda (x) (cons current x))
+          ;;              rest)))))
+  (iter '(()) s))

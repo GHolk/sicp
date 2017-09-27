@@ -80,7 +80,13 @@ branch 的戴重可以直接是數字或另一個 mobile。
 都是用 selector 和 constructor。
 
 ## map-tree
-最後的重頭戲，造出了map-tree函數；
+最後的重頭戲，造出了 map-tree 函數；
 其實也沒有很難啦。
-可以用car cdr雙重遞迴，
-或用map寫。
+可以用 car cdr 雙重遞迴，
+或用 map 寫。
+
+## subsets
+這個函數蠻神奇的，我自己可能想不出這麼優雅的寫法。
+後來寫了一個迴圈的版本，
+還可以把 append 修掉，改用 reduce，
+就只要跑一次迴圈，但最後的結果順序會倒過來。
