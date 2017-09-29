@@ -71,5 +71,77 @@
   (fold-right (lambda (x y) (cons x y)) () sequence))
 
 (define (reverse sequence)
-  (fold-left (lambda (x y) (cons y x) () sequence))
+  (fold-left (lambda (x y) (cons y x) () sequence)))
 
+
+(define (flatmap f list)
+  (fold-right
+   (lambda (sub-list total)
+     (fold-right (lambda (x list) (cons x list))
+                 total
+                 sub-list))
+   ()
+   (map f list)))
+
+(define (permutations s)
+  (define (remove x list)
+    (filter (lambda (y) (not (eq? x y)))
+            list))
+  (define (recur s)
+    (if (null? s)                    ; empty set?
+        (list s)                     ; sequence containing empty set
+        (flatmap (lambda (x)
+                   (map (lambda (p) (cons x p))
+                        (recur (remove x s))))
+                 s)))
+  (recur s))
+
+(define (unique-pairs n)
+  (define (seq x y)
+    (if (> x y)
+        ()
+        (cons x (seq (+ x 1) y))))
+  (flatmap
+   (lambda (i)
+     (map
+      (lambda (j) (cons i j))
+      (seq 1 (- i 1))))
+   (seq 1 n)))
+
+(define (prime-sum-pairs n)
+  (define (prime? x)
+    (define (iter i)
+      (if (> (square i) x)
+          #f
+          (or (= (remainder x i) 0)
+              (iter (+ i 1)))))
+    (iter 2))
+  (filter
+   (lambda (ij)
+     (not
+      (prime?
+       (+ (car ij)
+          (cdr ij)))))
+   (unique-pairs n)))
+
+(define (specific-sum-triples n s)
+  (define (seq x y)
+    (if (> x y)
+        ()
+        (cons x (seq (+ x 1) y))))
+  (define (unique-triples n)
+    (flatmap
+     (lambda (i)
+       (flatmap
+        (lambda (j)
+          (map
+           (lambda (k) (list i j k))
+           (seq 1 j)))
+        (seq 1 i)))
+     (seq 1 n)))
+  (filter
+   (lambda (triple)
+     (= (fold + 0 triple) s))
+   (unique-triples n)))
+
+           
