@@ -76,6 +76,45 @@ fold-right 參數順序相反，但是從列表第一個元素開始。
 大部份情況是用 reduce 是迴圈，
 但用完還要 reverse，時間複雜度是 2n。
 或是用 cons 和遞迴，就不用 reverse，
-但空間會變n。
+但空間會變 n。
+
+## flatmap
+flatmap 是一個神奇的函數，
+簡單來說就是 map 之後再 flat。
+因為很常用，所以獨立成一個函數。
+
+如果是一般語言，會寫成一個巢狀迴圈，
+先遍歷表，再把表中元素變成表，
+一一加到另一個表中。
 
 ## 巢狀迴圈
+scheme 對巢狀迴圈的處理不是很好。
+要嘛分解成二個間接遞迴，
+不然就是要在 lambda 裡再用 map reduce，
+然後 map reduce 裡又有 lambda。
+
+因為參數順序是把列表放最後，lambda 放中間，
+看起來很難閱讀。
+
+    (for-each 
+        (lambda (i)
+            (for-each
+                (lambda (j)
+                    (cons i j))
+                '(6 7 8 9)))
+        '(1 2 3 4 5))
+
+如果換一下參數順序可能會好一點，
+就會比較像一般語言的迴圈，
+
+    (for-each '(1 2 3) (lambda (i)
+        (for-each '(4 5 6) (lambda (j)
+            (set! l (cons (list i j) l))))))
+
+    (reduce 0 '(1 2 3) (lambda (x s)
+        (+ x s)))
+        
+或像 lisp 一樣用巨集：
+
+    (dolist x '(1 2 3)
+        (print x))
