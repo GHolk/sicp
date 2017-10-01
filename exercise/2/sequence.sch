@@ -102,7 +102,7 @@
                    (map (lambda (p) (cons x p))
                         (recur (remove x s))))
                  s)))
-  (recur s))
+    (recur s))
 
 (define (unique-pairs n)
   (define (seq x y)
@@ -114,6 +114,17 @@
      (map
       (lambda (j) (cons i j))
       (seq 1 (- i 1))))
+   (seq 1 n)))
+
+(define (pair-2d n m)
+  (define (seq x y)
+    (if (> x y)
+        ()
+        (cons x (seq (+ x 1) y))))
+  (flatmap
+   (lambda (i)
+     (map (lambda (j) (cons i j))
+          (seq 1 m)))
    (seq 1 n)))
 
 (define (prime-sum-pairs n)
@@ -153,75 +164,75 @@
    (unique-triples n)))
 
 
-(define (queens queen-number board-size)
-  (define (queen-cols k)
-    ;; return value should be:
-    ;; ((q1 q2 ... )
-    ;;  (q1 q2 ... ))
-    ;;
-    ;; q1 = (row col)
-    (if (= k 0)
-        empty-board
-        (filter
-         safe?
-         (flatmap
-          (lambda (rest-of-queens)
-            (map (lambda (row)
-                   (adjoin-position row k rest-of-queens))
-                 (enumerate-interval 1 board-size)))
-          (queen-cols (- k 1))))))
-  (define (queen-k k)
-    ;; return value should be:
-    ;; ((q1 q2 ... )
-    ;;  (q1 q2 ... ))
-    ;;
-    ;; q1 = (row col)
-    (if (= k 0)
-        empty-board
-        (filter
-         safe?
-         (flatmap
-          (lambda (rest-of-queens)
-            (map (lambda (new-cell)
-                   (cons new-cell rest-of-queens))
-                 all-cell))
-          (queen-cols (- k 1))))))
-  (define (safe? queen-positions)
-    ;; (display queen-positions) (newline)
-    (define (diff q1 q2)
-      (cons (- (car q1) (car q2))
-            (- (cdr q1) (cdr q2))))
-    (define (slash? diff)
-      (= (car diff)
-         (cdr diff)))
-    (define (backslash? diff)
-      (= 0 (+ (car diff)
-              (cdr diff))))
-    (define (same-row? diff)
-      (= 0 (car diff)))
-    (define (same-col? diff)
-      (= 0 (cdr diff)))
-    (let ((queen (car queen-positions))
-          (rest-queen (cdr queen-positions)))
-      (every (lambda (other-queen)
-               (let ((q-diff (diff other-queen queen)))
-                 (and (not (slash? q-diff))
-                      (not (backslash? q-diff))
-                      (not (same-row? q-diff))
-                      (not (same-col? q-diff)))))
-             rest-queen)))
-  (define (enumerate-interval n m)
-    (if (> n m)
-        ()
-        (cons n (enumerate-interval (+ n 1) m))))
-  (define (adjoin-position row col rest-of-queens)
-    (cons (cons row col)
-          rest-of-queens))
-  (define empty-board '(()))
-  (define all-cell
-    (flatmap
-     (lambda (row)
-       (map (lambda (col) (cons row col))
-            (enumerate-interval 1 board-size)))
-     (enumerate-interval 1 board-size)))
-  (queen-cols queen-number))
+    (define (queens queen-number board-size)
+      (define (queen-cols k)
+        ;; return value should be:
+        ;; ((q1 q2 ... )
+        ;;  (q1 q2 ... ))
+        ;;
+        ;; q1 = (row col)
+        (if (= k 0)
+            empty-board
+            (filter
+             safe?
+             (flatmap
+              (lambda (rest-of-queens)
+                (map (lambda (row)
+                       (adjoin-position row k rest-of-queens))
+                     (enumerate-interval 1 board-size)))
+              (queen-cols (- k 1))))))
+      (define (queen-k k)
+        ;; return value should be:
+        ;; ((q1 q2 ... )
+        ;;  (q1 q2 ... ))
+        ;;
+        ;; q1 = (row col)
+        (if (= k 0)
+            empty-board
+            (filter
+             safe?
+             (flatmap
+              (lambda (rest-of-queens)
+                (map (lambda (new-cell)
+                       (cons new-cell rest-of-queens))
+                     all-cell))
+              (queen-cols (- k 1))))))
+      (define (safe? queen-positions)
+        ;; (display queen-positions) (newline)
+        (define (diff q1 q2)
+          (cons (- (car q1) (car q2))
+                (- (cdr q1) (cdr q2))))
+        (define (slash? diff)
+          (= (car diff)
+             (cdr diff)))
+        (define (backslash? diff)
+          (= 0 (+ (car diff)
+                  (cdr diff))))
+        (define (same-row? diff)
+          (= 0 (car diff)))
+        (define (same-col? diff)
+          (= 0 (cdr diff)))
+        (let ((queen (car queen-positions))
+              (rest-queen (cdr queen-positions)))
+          (every (lambda (other-queen)
+                   (let ((q-diff (diff other-queen queen)))
+                     (and (not (slash? q-diff))
+                          (not (backslash? q-diff))
+                          (not (same-row? q-diff))
+                          (not (same-col? q-diff)))))
+                 rest-queen)))
+      (define (enumerate-interval n m)
+        (if (> n m)
+            ()
+            (cons n (enumerate-interval (+ n 1) m))))
+      (define (adjoin-position row col rest-of-queens)
+        (cons (cons row col)
+              rest-of-queens))
+      (define empty-board '(()))
+      (define all-cell
+        (flatmap
+         (lambda (row)
+           (map (lambda (col) (cons row col))
+                (enumerate-interval 1 board-size)))
+         (enumerate-interval 1 board-size)))
+      (queen-cols queen-number))
