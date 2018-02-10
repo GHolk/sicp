@@ -70,55 +70,47 @@
       this['set-code'](code, 'lisp')
     }
     highLight['text'] = highLight['emacslisp']
-    highLight.load = async function (path) {
-      const query = decodeQueryString(location.search.slice(1))
-      const scan = path.match(/^.*\.(.{1,8})$/)
+    highLight.load = async function (url) {
+      const scan = url.match(/^.*\.(.{1,8})$/)
       let extension
       if (scan) extension = scan[1]
       else {
-        path += '/README.md'
+        url = url + '/README.md'
         extension = 'md'
       }
-      const currentUrl = new URL(query.markdown,  location)
-      const nextUrl = new URL(path, currentUrl)
-      const text = await fetchText(nextUrl)
-      const state = {text}
+      const text = await fetchText(url)
       switch (extension) {
         case 'js':
           highLight['javascript'](text)
-          query['code'] = nextUrl.pathname
-          state.type = 'javascript'
           break
         case 'el':
           highLight['emacslisp'](text)
-          query['code'] = nextUrl.pathname
-          state.type = 'emacslisp'
           break
         case 'sch':
           highLight['scheme'](text)
-          query['code'] = nextUrl.pathname
-          state.type = 'scheme'
           break
         case 'md':
           highLight['markdown'](text)
-          query['markdown'] = nextUrl.pathname
-          state.type = 'markdown'
-          if (!nextUrl.pathname.match(/README\.md$/)) {
+          history.pushState(text, '', url)
+          if (!url.match(/README\.md$/)) {
             const scheme = await fetchText(url.replace(/\.md$/, '.sch'))
             highLight['scheme'](scheme)
           }
           break
+        case 'txt':
+        default:
+          highLight['text'](text)
+          break
       }
-      const nextQueryString = encodeQueryString(query)
-      history.pushState(state, '', '?' + nextQueryString)
     }
     highLight['markdown-viewer']
       .addEventListener('click', function clickAnchor(click) {
       const node = click.target
       if (node.tagName == 'A') {
+        const url = new URL(node.href)
         if (isRelative(node)) {
           click.preventDefault()
-          highLight.load(node.getAttribute('href'))
+          highLight.load(url.href)
         }
       }
       function isRelative(node) {
@@ -128,14 +120,13 @@
       }
     })
     window.addEventListener('popstate', function (pop) {
-      const state = pop.state
-      highLight[state.type](state.text)
+      highLight['markdown'](pop.state)
     })
     highLight.load('README.md')
     function decodeQueryString(string) {
       const pair = string.split(/&/g)
       const map = {}
-      pair.filter(string => string).forEach((string) => {
+      pair.forEach((string) => {
         const pair = string.split('=')
         const name = decodeURIComponent(pair[0])
         const value = decodeURIComponent(pair[1] || '')
