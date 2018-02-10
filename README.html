@@ -22,6 +22,9 @@
       overflow: auto;
     }
   </style>
+  <link rel="stylesheet"
+        href="highlight-js/styles/default.css">
+  <script src="highlight-js/highlight.pack.js"></script>
   
   
   <div id="markdown-viewer"></div>
@@ -55,6 +58,7 @@
       const node = this['code-viewer']
       node.className = language
       node.textContent = code
+      hljs.highlightBlock(node)
     }
     highLight['javascript'] = function (code) {
       this['set-code'](code, 'javascript')
@@ -99,20 +103,47 @@
           break
       }
     }
-    window.addEventListener('click', function clickAnchor(click) {
-    const node = click.target
+    highLight['markdown-viewer']
+      .addEventListener('click', function clickAnchor(click) {
+      const node = click.target
       if (node.tagName == 'A') {
         const url = new URL(node.href)
-        if (url.protocol == 'file:') {
+        if (isRelative(node)) {
           click.preventDefault()
           highLight.load(url.href)
         }
+      }
+      function isRelative(node) {
+        const url = node.getAttribute('href')
+        if (/^http/.test(url)) return false
+        else return true
       }
     })
     window.addEventListener('popstate', function (pop) {
       highLight['markdown'](pop.state)
     })
     highLight.load('README.md')
+    function decodeQueryString(string) {
+      const pair = string.split(/&/g)
+      const map = {}
+      pair.forEach((string) => {
+        const pair = string.split('=')
+        const name = decodeURIComponent(pair[0])
+        const value = decodeURIComponent(pair[1] || '')
+        map[name] = value
+      })
+      return map
+    }
+    function encodeQueryString(map) {
+      const queryArray = []
+      for (const name in map) {
+        const pairString = encodeURIComponent(name) + '=' +
+          encodeURIComponent(map[name])
+        queryArray.push(pairString)
+      }
+      return queryArray.join('&')
+    }
+      
   </script>
 
 </html>
