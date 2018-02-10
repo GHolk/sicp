@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <meta charset="UTF-8">
-  <style>
-    #markdown-viewer {
+  <head>
+    <meta charset="UTF-8">
+    <title>SICP note reader</title>
+    <style>
+      #markdown-viewer {
       margin: 0;
       padding: 2%;
       width: 46%;
       position: absolute;
       left: 0;
       top: 0;
-    }
-    #code-viewer {
+      }
+      #code-viewer {
       margin: 0;
       border: solid 1px black;
       width: 46%;
@@ -19,17 +21,18 @@
       top: 0;
       max-height: 100%;
       overflow: auto;
-    }
-    #code-viewer code {
+      }
+      #code-viewer code {
       padding: 2%;
-    }
-  </style>
-  <link rel="stylesheet"
-        href="highlight-js/styles/default.css">
-  <script src="highlight-js/highlight.pack.js"></script>
-  
-  
-  <div id="markdown-viewer"></div>
+      }
+    </style>
+    <link rel="stylesheet"
+          href="highlight-js/styles/default.css">
+    <script src="highlight-js/highlight.pack.js"></script>
+  </head>
+  <body>
+    
+    <div id="markdown-viewer"></div>
   <pre id="code-viewer"><code></code></pre>
   <script src="https://gholk.github.io/marked/marked.min.js"></script>
   <script>
@@ -171,5 +174,5 @@
     }
       
   </script>
-
+  </body>
 </html>
