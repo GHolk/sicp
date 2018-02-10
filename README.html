@@ -13,13 +13,15 @@
     #code-viewer {
       margin: 0;
       border: solid 1px black;
-      padding: 2%;
       width: 46%;
       position: fixed;
       right: 0;
       top: 0;
-      height: 100%;
+      max-height: 100%;
       overflow: auto;
+    }
+    #code-viewer code {
+      padding: 2%;
     }
   </style>
   <link rel="stylesheet"
@@ -29,7 +31,7 @@
   
   <div id="markdown-viewer"></div>
   <pre id="code-viewer"><code></code></pre>
-  <script src="http://gholk.github.io/marked/marked.min.js"></script>
+  <script src="https://gholk.github.io/marked/marked.min.js"></script>
   <script>
     async function fetchText(url) {
       let text
