@@ -76,10 +76,7 @@
       const scan = url.match(/^.*\.(.{1,8})$/)
       let extension
       if (scan) extension = scan[1]
-      else {
-        url = url + '/README.md'
-        extension = 'md'
-      }
+      else throw new Error('file has no extention')
       const text = await fetchText(url)
       switch (extension) {
         case 'js':
@@ -93,42 +90,69 @@
           break
         case 'md':
           highLight['markdown'](text)
-          history.pushState(text, '', url)
-          if (!url.match(/README\.md$/)) {
-            const scheme = await fetchText(url.replace(/\.md$/, '.sch'))
-            highLight['scheme'](scheme)
-          }
           break
         case 'txt':
         default:
           highLight['text'](text)
           break
       }
+      return text
     }
     highLight['markdown-viewer']
       .addEventListener('click', function clickAnchor(click) {
       const node = click.target
       if (node.tagName == 'A') {
-        const url = new URL(node.href)
-        if (isRelative(node)) {
+        const rawUrl = node.getAttribute('href')
+        if (!/^https?:\/\//.test(rawUrl)) {
           click.preventDefault()
-          highLight.load(url.href)
+          browseUrl(rawUrl)
         }
       }
-      function isRelative(node) {
-        const url = node.getAttribute('href')
-        if (/^http/.test(url)) return false
-        else return true
+    })
+    function browseUrl(relativeUrl) {
+      const query = decodeQueryString(location.search.slice(1))
+      const currentUrl = new URL(query.markdown, location)
+      const nextUrl = new URL(relativeUrl, currentUrl)
+    
+      const scan = relativeUrl.match(/\.(.{1,8})$/)
+      if (scan) {
+        const extension = scan[1]
+        if (extension == 'md') {
+          query['markdown'] = nextUrl.href
+          highLight.load(nextUrl.href)
+  
+          nextUrl.pathname = nextUrl.pathname.replace(/\.md$/, '.sch')
+          query['code'] = nextUrl.href
+          highLight.load(nextUrl.href)
+        }
+        else {
+          query['code'] = nextUrl.href
+          highLight.load(nextUrl.href)
+        }
       }
-    })
+      else {
+        nextUrl.pathname += '/README.md'
+        query['markdown'] = nextUrl.href
+        highLight.load(nextUrl.href)
+      }
+      history.pushState('', '', '?' + encodeQueryString(query))
+    }
     window.addEventListener('popstate', function (pop) {
-      highLight['markdown'](pop.state)
+      if (!location.search) highLight.load('README.md')
+      const query = decodeQueryString(location.search.slice(1))
+      if (query['markdown']) highLight.load(query['markdown'])
+      if (query['code']) highLight.load(query['code'])
     })
-    highLight.load('README.md')
+    if (location.search) {
+      const query = decodeQueryString(location.search.slice(1))
+      if (query['markdown']) highLight.load(query['markdown'])
+      if (query['code']) highLight.load(query['code'])
+    }
+    else highLight.load('README.md')
     function decodeQueryString(string) {
       const pair = string.split(/&/g)
       const map = {}
-      pair.forEach((string) => {
+      pair.filter(Boolean).forEach((string) => {
         const pair = string.split('=')
         const name = decodeURIComponent(pair[0])
         const value = decodeURIComponent(pair[1] || '')
