@@ -13,6 +13,10 @@ so I try to use emacs and lisp, and so on choose sicp.
 
 ## [筆記](exercise)
 每讀完一節會寫筆記，努力認真中。
+可以直接在 github 上看，
+或用 [我寫的 web 版 markdown 閱讀器][web] 看。
+
+[web]: http://gholk.github.io/sicp/
 
 ## install
 To read it local, first I use wget download from
