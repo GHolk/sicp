@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <style>
+    #markdown-viewer {
+      margin: 0;
+      padding: 2%;
+      width: 46%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    #code-viewer {
+      margin: 0;
+      border: solid 1px black;
+      padding: 2%;
+      width: 46%;
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100%;
+      overflow: auto;
+    }
+  </style>
+  
+  
+  <div id="markdown-viewer"></div>
+  <pre id="code-viewer"><code></code></pre>
+  <script src="http://gholk.github.io/marked/marked.min.js"></script>
+  <script>
+    async function fetchText(url) {
+      let text
+      try {
+        const response = await fetch(url)
+        text = await response.text()
+      }
+      catch (fetchError) {
+        text = `${url} not found`
+      }
+      return text
+    }
+    async function fetchExt(name, extention) {
+      const response = extention.map(ext => fetchText(`${name}.${ext}`))
+      const text = await Promise.all(response)
+      return text
+    }
+    const highLight = {}
+    highLight['markdown-viewer'] = document.querySelector('#markdown-viewer')
+    highLight['code-viewer'] = document.querySelector('#code-viewer code')
+    highLight['markdown'] = function (markdown) {
+      const html = marked(markdown)
+      this['markdown-viewer'].innerHTML = html
+    }
+    highLight['set-code'] = function (code, language) {
+      const node = this['code-viewer']
+      node.className = language
+      node.textContent = code
+    }
+    highLight['javascript'] = function (code) {
+      this['set-code'](code, 'javascript')
+    }
+    highLight['scheme'] = function (code) {
+      this['set-code'](code, 'scheme')
+    }
+    highLight['emacslisp'] = function (code) {
+      this['set-code'](code, 'lisp')
+    }
+    highLight['text'] = highLight['emacslisp']
+    highLight.load = async function (url) {
+      const scan = url.match(/^.*\.(.{1,8})$/)
+      let extension
+      if (scan) extension = scan[1]
+      else {
+        url = url + '/README.md'
+        extension = 'md'
+      }
+      const text = await fetchText(url)
+      switch (extension) {
+        case 'js':
+          highLight['javascript'](text)
+          break
+        case 'el':
+          highLight['emacslisp'](text)
+          break
+        case 'sch':
+          highLight['scheme'](text)
+          break
+        case 'md':
+          highLight['markdown'](text)
+          history.pushState(text, '', url)
+          if (!url.match(/README\.md$/)) {
+            const scheme = await fetchText(url.replace(/\.md$/, '.sch'))
+            highLight['scheme'](scheme)
+          }
+          break
+        case 'txt':
+        default:
+          highLight['text'](text)
+          break
+      }
+    }
+    window.addEventListener('click', function clickAnchor(click) {
+    const node = click.target
+      if (node.tagName == 'A') {
+        const url = new URL(node.href)
+        if (url.protocol == 'file:') {
+          click.preventDefault()
+          highLight.load(url.href)
+        }
+      }
+    })
+    window.addEventListener('popstate', function (pop) {
+      highLight['markdown'](pop.state)
+    })
+    highLight.load('README.md')
+  </script>
+
+</html>
