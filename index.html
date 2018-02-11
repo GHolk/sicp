@@ -5,25 +5,28 @@
     <title>SICP note reader</title>
     <style>
       #markdown-viewer {
-      margin: 0;
-      padding: 2%;
-      width: 46%;
-      position: absolute;
-      left: 0;
-      top: 0;
+        margin: 0;
+        padding: 2%;
+        width: 46%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
       }
       #code-viewer {
-      margin: 0;
-      border: solid 1px black;
-      width: 46%;
-      position: fixed;
-      right: 0;
-      top: 0;
-      max-height: 100%;
-      overflow: auto;
+        margin: 0;
+        border: solid 1px black;
+        width: 46%;
+        position: fixed;
+        right: 0;
+        top: 0;
+        max-height: 100%;
+        overflow: auto;
       }
       #code-viewer code {
-      padding: 2%;
+        padding: 2%;
+      }
+      nav {
       }
     </style>
     <link rel="stylesheet"
@@ -32,6 +35,9 @@
   </head>
   <body>
     
+    <nav>
+      <a href="..">上一層</a>
+    </nav>
     <div id="markdown-viewer"></div>
   <pre id="code-viewer"><code></code></pre>
   <script src="https://gholk.github.io/marked/marked.min.js"></script>
@@ -101,8 +107,7 @@
       }
       return text
     }
-    highLight['markdown-viewer']
-      .addEventListener('click', function clickAnchor(click) {
+    window.addEventListener('click', function clickAnchor(click) {
       const node = click.target
       if (node.tagName == 'A') {
         const rawUrl = node.getAttribute('href')
@@ -117,7 +122,7 @@
       const currentUrl = new URL(query.markdown, location)
       const nextUrl = new URL(relativeUrl, currentUrl)
     
-      const scan = relativeUrl.match(/\.(.{1,8})$/)
+      const scan = relativeUrl.match(/\.(\w{1,8})$/)
       if (scan) {
         const extension = scan[1]
         if (extension == 'md') {

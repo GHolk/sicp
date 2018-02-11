@@ -18,7 +18,12 @@ so I try to use emacs and lisp, and so on choose sicp.
 
 [web]: http://gholk.github.io/sicp/
 
-## install
+## [scheme] interpreter
+本來用 mit-scheme，後來換成 guile。
+
+[scheme]: scheme.md
+
+## sicp install
 To read it local, first I use wget download from
 <https://mitpress.mit.edu/sicp/> , put them in `./html` .
 
