@@ -9,7 +9,7 @@
 (define (map p sequence)
   (accumulate (lambda (current all)
                 (cons (p current)all))
-              ()
+              '()
               (reverse sequence)))
 
 (define (append seq1 seq2)
@@ -42,7 +42,7 @@
 
 (define (accumulate-n op init seqs)
   (if (null? (car seqs))
-      ()
+      '()
       (cons (accumulate op init (map car seqs))
             (accumulate-n op init (map cdr seqs)))))
 
@@ -65,7 +65,7 @@
 
 (define (transpose mat)
   (map reverse
-       (accumulate-n cons () mat)))
+       (accumulate-n cons '() mat)))
 
 (define (matrix-*-matrix m n)
   (let ((cols (transpose n)))
@@ -76,10 +76,10 @@
 
 
 (define (reverse sequence)
-  (fold-right (lambda (x y) (cons x y)) () sequence))
+  (fold-right (lambda (x y) (cons x y)) '() sequence))
 
 (define (reverse sequence)
-  (fold-left (lambda (x y) (cons y x) () sequence)))
+  (fold-left (lambda (x y) (cons y x) '() sequence)))
 
 
 (define (flatmap f list)
@@ -88,7 +88,7 @@
      (fold-right (lambda (x list) (cons x list))
                  total
                  sub-list))
-   ()
+   '()
    (map f list)))
 
 (define (permutations s)
@@ -107,7 +107,7 @@
 (define (unique-pairs n)
   (define (seq x y)
     (if (> x y)
-        ()
+        '()
         (cons x (seq (+ x 1) y))))
   (flatmap
    (lambda (i)
@@ -119,7 +119,7 @@
 (define (pair-2d n m)
   (define (seq x y)
     (if (> x y)
-        ()
+        '()
         (cons x (seq (+ x 1) y))))
   (flatmap
    (lambda (i)
@@ -146,7 +146,7 @@
 (define (specific-sum-triples n s)
   (define (seq x y)
     (if (> x y)
-        ()
+        '()
         (cons x (seq (+ x 1) y))))
   (define (unique-triples n)
     (flatmap
@@ -223,7 +223,7 @@
              rest-queen)))
   (define (enumerate-interval n m)
     (if (> n m)
-        ()
+        '()
         (cons n (enumerate-interval (+ n 1) m))))
   (define (adjoin-position row col rest-of-queens)
     (cons (cons row col)
@@ -236,3 +236,25 @@
             (enumerate-interval 1 board-size)))
      (enumerate-interval 1 board-size)))
   (queen-cols queen-number))
+
+(define (print-point xy)
+  (let ((x (car xy))
+        (y (cdr xy)))
+    (define (iter i string)
+      (if (> i 8)
+          string
+      (iter (+ i 1)
+            (string-append string
+                           (if (= i x)
+                               "〇"
+                               "十")))))
+    (iter 1 "")))
+
+(define (print-board board)
+  (for-each (lambda (xy-list)
+              (for-each (lambda (point)
+                          (display (print-point point))
+                          (newline))
+                        xy-list)
+              (newline))
+            board))
