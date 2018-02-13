@@ -24,3 +24,10 @@ $PATH 裡有 scheme 才能用 `run-scheme` 。
 可以寫到 `~/.guile` 裡，讓 guile 啟動後自動執行。
 
 [srfi]: https://www.gnu.org/software/guile/manual/html_node/About-SRFI-Usage.html#About-SRFI-Usage
+
+後來我改用 `(import (rnrs))` ，
+好像是 scheme 標準 r6rs 定義的 library 寫法。
+rnrs 是 library 名，應該是引入標準函數的意思。
+另外 rnrs 和 srfi 的 lib 函數名有差，
+srfi 有 fold-left fold-right，
+rnrs 是 fold 和 fold-right。

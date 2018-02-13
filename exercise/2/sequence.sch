@@ -258,3 +258,10 @@
                         xy-list)
               (newline))
             board))
+
+
+(define (pipe value . function-list)
+  (fold-left (lambda (value function)
+               (function value))
+             value
+             function-list))
