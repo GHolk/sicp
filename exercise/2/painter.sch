@@ -102,3 +102,53 @@
                       (0   0.5))))
 (define wave-painter)
 
+(define (beside painter1 painter2)
+  (let ((split-point (make-vect 0.5 0.0)))
+    (let ((paint-left
+           (transform-painter painter1
+                              (make-vect 0.0 0.0)
+                              split-point
+                              (make-vect 0.0 1.0)))
+          (paint-right
+           (transform-painter painter2
+                              split-point
+                              (make-vect 1.0 0.0)
+                              (make-vect 0.5 1.0))))
+      (lambda (frame)
+        (paint-left frame)
+        (paint-right frame)))))
+                                        
+
+;; error implement
+(define (flip-horiz p1 p2)
+  (let* ((split-point (make-vect 0.5 1))
+         (left (transform-painter p1
+                                  split-point
+                                  (make-vect 0 1)
+                                  (make-vect 0.5 0)))
+         (right (transform-painter p2
+                                   split-point
+                                   (make-vect 0.5 0)
+                                   (make-vect 1 1))))
+    (lambda (frame)
+      (left frame)
+      (right frame))))
+                                  
+
+(define (below p1 p2)
+  (let* ((split-point (make-vect 0 0.5))
+         (low-painter (transform-painter p1
+                                        (make-vect 0 0)
+                                        split-point
+                                        (make-vect 1 0)))
+         (up-painter (transform-painter p2
+                                        split-point
+                                        (make-vect 1 0.5)
+                                        (make-vect 0 1))))
+    (lambda (frame)
+      (up-painter frame)
+      (low-painter frame))))
+
+;; (define (below p1 p2)
+;;   (let* ((beside-painter (beside p1 p2))
+;;          (below-painter (transform-painter 
