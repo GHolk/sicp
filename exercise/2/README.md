@@ -41,4 +41,39 @@ numbbbbb 是假設是和 x y 軸正交的正方形，
     像在 js 中會 `array.map(...).filter(...).forEach(...)` ，
     在 scheme 也可以。
     這章中有很經典的八皇后問題，蠻難的。
+  - 2-2-4 [繪圖](painter.md) ：實作了一個與底層無關的繪圖語言。
+    聽說 gimp 是用 scheme 作為內部語言，
+    難道就是這章內容？
 
+## 2-3 Quote 與 Symbol
+lisp 中用一種稱為 quote 的方式實作 symbol 這個概念，
+並以 symbol 及 list 來表達 lisp 語言本身。
+
+要註明一個詞是 symbol，僅代表該詞本身，
+如同在寫作時使用引號標起來，僅代表本身。
+
+quote 也就是 `'` ，
+在 lisp 中也是 s 表達式，
+也就是 `'(a b c)` 其實是
+`(quote (a b c))` 的簡寫。
+這裡 a b c 不會被求值，
+因為 quote 和 if 同為特殊形式，
+並不遵守一般求值規則。
+
+quote 必須為巢狀，不太懂。
+
+> But allowing statements in a
+> language that talk about other statements in that language makes it very
+> difficult to maintain any coherent principle of what "equals can be
+> substituted for equals" should mean.  For example, if we know that the
+> evening star is the morning star, then from the statement "the evening
+> star is Venus" we can deduce "the morning star is Venus."  However,
+> given that "John knows that the evening star is Venus" we cannot infer
+> that "John knows that the morning star is Venus."
+
+等號的一致性，不太懂。
+
+  - 2-3-1 [符號系統的微分](symbol-different.md) ：
+    如同數學的微分，符號系統也能定義微分。
+    符號系統的微分在 lisp 存在已久，
+    因此這章實作作為符號的練習。
