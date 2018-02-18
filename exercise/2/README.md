@@ -73,7 +73,29 @@ quote 必須為巢狀，不太懂。
 
 等號的一致性，不太懂。
 
-  - 2-3-1 [符號系統的微分](symbol-different.md) ：
-    如同數學的微分，符號系統也能定義微分。
-    符號系統的微分在 lisp 存在已久，
-    因此這章實作作為符號的練習。
+### 2-3-1 [符號實作微分解析解](symbol-different.md)
+在第一章有做過數值方法的微分，
+就如果有 `number->number` 的函數 f，
+就取一區間 d，計算 `(f(x+d)-f(x))/d` 即可。
+
+```scheme
+(define (f x)
+  "f(x) = x^2 + 2*x + 7"
+  (+ (* x x) (* 2 x) 7))
+
+(define (deriv f)
+  (define interval 0.001)
+  (lambda (x)
+    (/ (- (f (+ x interval))
+          (f x))
+       interval)))
+```
+
+只定義了一個 deriv 函數，裡面使用
+`make-sum sum? addend augend`
+等預先定義輸入輸出的函數，
+**理論上** 就是完整的函數。
+
+然後要我們實作出那些函數，或規定實現細節，
+甚至可以設計和一般數學上使用相同的格式。
+
