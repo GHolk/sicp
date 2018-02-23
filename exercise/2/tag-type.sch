@@ -1,0 +1,52 @@
+
+(define (install-derive-package)
+  (put 'deriv '(sum +)
+       (lambda (sum)
+         (make-sum (deriv (addend sum))
+                   (deriv (augend sum)))))
+  (put 'deriv '(product *)
+       (lambda (product)
+         (make-sum (make-product (deriv (multiplier product))
+                                 (multiplicand product))
+                   (make-product (deriv (multiplicand product))
+                                 (multiplier product))))))
+
+(define (make-complex real imaginary)
+  (cons real imaginary))
+(define real-part car)
+(define imaginary-part cdr)
+(define (complex real imaginary)
+  (let ((complex (make-complex real imaginary)))
+    (lambda (tag)
+      (case tag
+        ((real) (real-part complex))
+        ((imaginary) (imaginary-part complex))
+        ((complex) complex)
+        (else (error "unknown property" tag))))))
+
+(define (get-record set)
+  ((get type 'record) set))
+
+(define (make-from-real-imag x y)
+       (define (dispatch op)
+         (cond ((eq? op 'real-part) x)
+               ((eq? op 'imag-part) y)
+               ((eq? op 'magnitude)
+                (sqrt (+ (square x) (square y))))
+               ((eq? op 'angle) (atan y x))
+               (else
+                (error "Unknown op -- MAKE-FROM-REAL-IMAG" op))))
+       dispatch)
+
+(define (make-from-mag-ang mag ang)
+       (define (dispatch op)
+         (cond ((eq? op 'real-part)
+                (* mag (cos ang)))
+               ((eq? op 'imag-part)
+                (* mag (sin ang)))
+               ((eq? op 'magnitude) mag)
+               ((eq? op 'angle) ang)
+               (else
+                (error "Unknown op -- MAKE-FROM-MAG-ANG" op))))
+       dispatch)
+
