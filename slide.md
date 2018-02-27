@@ -28,38 +28,43 @@ Structure and Interpolation of Computer Program
 
 ---
 
-<img src="http://sitcon.org/2018/static/img/speaker/15.jpg" style="width: 50%;">
+## gold holk
+
+<img src="http://sitcon.org/2018/static/img/speaker/15.jpg" 
+     style="width: 30%; 
+            display: block;
+            margin: auto;">
 
 * 日常 GNU/Linux 使用者
 * 興趣取向的 Web 開發者
-
-[gholk]: http://sitcon.org/2018/static/img/speaker/15.jpg
 
 ---
 
 ## 為什麼要讀這本書？
 
 * 身為 linux 使用者，多少會碰一點程式。
+* 聽說 javascript 的概念來自 scheme。
 * 寫出會動的程式外，要如何寫出良構、健壯、好懂的程式？
 * 除了讓電腦動起來為你做事，是不是該學一點演算法、資料結構？
 
 ---
 
-## 讀 sicp 的好處
+## javascript 與 scheme
 
-* 讓你寫遞迴像喝水一樣
-* 了解函數式程式語言之美
-* 了解語法可以很簡單
-
+功能 | scheme | javascript
+----|--------|-----------
+閉包 | 有     | 有
+函數作為第一類公民 （與變數同命名空間）| 有 | 有
+範式 | 函數式 | 指令式
+物件導向 | 函數與巨集實現 | 語言內實現
 
 ---
 
-## 筆記
+## 讀 sicp 的好處
 
-我邊讀邊寫筆記，和書中例題的程式，
-[放在 github 上。][note]
-
-[note]: http://github.com/GHolk/sicp
+* 讓你寫遞迴像喝水一樣。（第 1 章後）
+* 了解函數式程式語言之美。（第 1 2 章後）
+* 了解 lisp 語法之美。（第 2 章吧？）
 
 ---
 
@@ -73,6 +78,15 @@ Structure and Interpolation of Computer Program
 
 ---
 
+### lisp 語言
+
+* 傳統 lisp 基於符號、列表及 lambda 演算
+* scheme 引入了 lexical scope、詞法作用域、靜態作用域、閉包
+* scheme 將函數與變數放在同一命名空間
+* 現代 lisp 也有 lexical scope
+
+---
+
 ## 章節
 
  1. 程序
@@ -80,6 +94,163 @@ Structure and Interpolation of Computer Program
  3. 模組、物件、狀態
  4. 語法解析
  5. 暫存器與底層結構
+
+* 前二章是 scheme 練習
+* 後三章是理論探討與實作
+
+---
+
+### 從 C 開始的程式設計
+
+ 1. C 語言的意義就是一連串的記憶體操作
+ 2. 變數的宣告、讀取、改變都對應到底層
+ 3. 從 0101 的二進位內容建構整數、字串、鏈表、物件等高級結構
+ 4. 最後建構出編譯器，構成一個完整的程式架構
+
+---
+
+### 從 scheme 開始的 sicp
+
+ 1. 函數的呼叫是抽像的代換規則
+ 2. 用函數實現資料結構
+ 3. 用函數及資料結構實作直譯器
+ 4. 用函數模擬 CPU
+
+---
+
+### 函數
+
+* 沒有算符，只有函數。
+* 沒有優先權問題。
+* 免去 **運算子** 的 **重載** 與 **多載** 。
+
+```c
+1 + 2 * 3
+// (1 + 2) * 3 ?
+// 1 + (2 * 3) ?
+```
+
+```c
+add(1, multiply(2,3) )
+// 1 + (2 * 3)
+```
+
+---
+
+### S 表達式
+
+* 函數與巨集都以 S 表達式表示。
+* 控制結構也是 S 表達式，簡化語法分析。
+
+```scheme
+(+ 1 (* 2 3)) ; 1 + (2 * 3)
+```
+
+```scheme
+(if (> a b)
+    (print a)
+    (print b))
+
+```
+
+---
+
+### 迴圈與遞迴
+
+```scheme
+(define (series i sum)
+  (if (= 0 i)
+      sum
+      (series (- i 1)
+              (+ sum i))))
+```
+
+```javascript
+let sum = 0
+for (let i=0; i<n; i++) {
+  sum = sum + i
+}
+```
+
+---
+
+### 八皇后問題
+
+ |1|2|3|4|5|6|7|8
+-|-|-|-|-|-|-|-|-
+1| | | |o| | | |
+2| |o| | | | | |
+3| | | | | | |o|
+4| | |o| | | | |
+5| | | | | |o| |
+6| | | | | | | |o
+7| | | | |o| | |
+8|o| | | | | | |
+
+---
+
+### 微分解析解
+
+```scheme
+(deriv '(+ x 3))
+;; (+ 1 0)
+
+(deriv '(* 6 x))
+;; (+ (* 0 x)
+;;    (* 6 1))
+```
+
+---
+
+### 過時的 scheme
+* 在 1970 年代，你沒有選擇
+* lisp 系語言式微
+* 本書偏難
+* 對指令式編程的偏好
+
+---
+
+#### 指令式編程較符合底層結構
+
+每個 statement 都在改變程式的狀態。
+
+ 1. 從硬碟中的內容寫到記憶體中
+ 2. 把該記憶體位置的值 `*3`
+ 3. 將該記憶體內容寫回硬碟
+
+```javascript
+x = read_file()
+x = x * 3
+write_file(x)
+```
+
+---
+
+#### 函數式編程是一層層往上疊
+
+在 scheme 中，函數可以有多個 statement，
+但基本上你用不到第二個 statement
+
+```javascript
+function fp(a, b) {
+  return multiply(add(a, b), a)
+}
+```
+
+---
+
+## 結論
+
+* 喜歡函數式編程的人
+* 不喜歡底層組語二進位的人
+
+---
+
+## 如何讀
+
+* UTF texinfo | html | pdf
+* mit scheme | guile | racket
+* emacs | vim | atom
 
 ---
 
@@ -91,62 +262,24 @@ Structure and Interpolation of Computer Program
 
 ---
 
-### S 表達式
-
-`f(x)` vs `(f x)`
-
-```scheme
-(printf "1 is %d\n" 1)
-
-(+ 1 2 3)
-
-(if (and c
-         (= a b))
-    (print "a = b = c")
-    (print "a != b != c"))
-```
-
----
-
-### 函數與其它
-
-```scheme
-;; (a * b) + (c - d)
-(+ (* a b)
-   (- c d))
-```
-
-```scheme
-;; (a > b) && (b > c)
-(and (> a b)
-     (> b c))
-
-;; 用 if 實現 and
-(if (> a b)
-    (> b c)
-    #f)
-```
-
-```scheme
-(let ((sum (+ a b))
-      (product (* a b)))
-  (if (> sum product)
-      (print (- sum product))))
-```
-
----
-
 ### 迴圈與遞迴
 
-```scheme
-(define (fibonacci a1 a2)
-  (fibonacci a2
-             (+ a1 a2)))
+```javascript
+function recursion(i) {
+    if (i == 0) return 0
+    else {
+        print(i)
+        i++
+        return recurtion(i)
+    }
+}
+let i = 0
+recursion(i)
 ```
 
 ```javascript
-for (let a1 a2; ;) {
-    [a1, a2] = [a2, a1+a2]
+for (let i=0; i<10; i++) {
+    print(i)
 }
 ```
 
