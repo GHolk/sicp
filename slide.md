@@ -4,12 +4,15 @@
 
 *gholk*
 
+[本簡報](https://hackmd.io/p/HJBq3jqDM)
+[slido 提問](https://www.sli.do/SITCON18-S31)
+
 ---
 
 <style>
-    td {
-        width: 50%;
-        }
+  td {
+    width: 50%;
+  }
 </style>
 
 <table>
@@ -78,7 +81,7 @@ Structure and Interpolation of Computer Program
 
 ---
 
-### lisp 語言
+## scheme 作為 lisp 的方言
 
 * 傳統 lisp 基於符號、列表及 lambda 演算
 * scheme 引入了 lexical scope、詞法作用域、靜態作用域、閉包
@@ -100,7 +103,7 @@ Structure and Interpolation of Computer Program
 
 ---
 
-### 從 C 開始的程式設計
+## 從 C 開始的程式設計
 
  1. C 語言的意義就是一連串的記憶體操作
  2. 變數的宣告、讀取、改變都對應到底層
@@ -109,7 +112,7 @@ Structure and Interpolation of Computer Program
 
 ---
 
-### 從 scheme 開始的 sicp
+## 從 scheme 開始的 sicp
 
  1. 函數的呼叫是抽像的代換規則
  2. 用函數實現資料結構
@@ -118,7 +121,7 @@ Structure and Interpolation of Computer Program
 
 ---
 
-### 函數
+## 函數
 
 * 沒有算符，只有函數。
 * 沒有優先權問題。
@@ -137,7 +140,7 @@ add(1, multiply(2,3) )
 
 ---
 
-### S 表達式
+## S 表達式
 
 * 函數與巨集都以 S 表達式表示。
 * 控制結構也是 S 表達式，簡化語法分析。
@@ -167,6 +170,8 @@ add(1, multiply(2,3) )
       (series (- i 1)
               (+ sum i))))
 ```
+
+---
 
 ### 迴圈的問題
 
@@ -207,7 +212,7 @@ for (let i=0; i<n; i++) {
 
 ---
 
-### 八皇后問題
+## 八皇后問題
 
 <style id="queen-8">
 #queen-8 + * td {
@@ -237,9 +242,9 @@ x|1|2|3|4|5|6|7|8
 
 ---
 
-### 微分解析解
+## 微分解析解
 
-```scheme
+```
 (deriv '(+ x 3))
 ;; (+ 1 0)
 
@@ -250,7 +255,7 @@ x|1|2|3|4|5|6|7|8
 
 ---
 
-### 過時的 scheme
+## 過時的 scheme
 * 在 1970 年代，你沒有選擇
 * lisp 系語言式微
 * 本書偏難
@@ -258,7 +263,7 @@ x|1|2|3|4|5|6|7|8
 
 ---
 
-#### 指令式編程較符合底層結構
+### 指令式編程較符合底層結構
 
 每個 statement 都在改變程式的狀態。
 
@@ -274,7 +279,7 @@ write_file(x)
 
 ---
 
-#### 函數式編程是一層層往上疊
+### 函數式編程是一層層往上疊
 
 在 scheme 中，函數可以有多個 statement，
 但基本上你用不到第二個 statement
@@ -301,3 +306,18 @@ function fp(a, b) {
 * scheme interpreter: mit scheme | guile | racket
 * editor: emacs | vim
 
+---
+
+## 來 emacs 攤位一起玩！
+
+還有 scheme 或 sicp 問題，
+歡迎來 emacs.tw 攤位找我ㄛ
+
+---
+
+<style>
+  a:after {
+    content: " [" attr(href) "]";
+    color: gray;
+  }
+</style>
